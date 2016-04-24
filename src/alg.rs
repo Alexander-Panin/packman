@@ -1,5 +1,5 @@
-use std::cmp::min;
 pub type Matrix<T> = Vec<Vec<T>>;
+pub type Integral = usize;
 
 fn get_in<T>(x: &Matrix<T>, i: usize, j: usize) -> &T {
     unsafe { x.get_unchecked(i).get_unchecked(j) }
@@ -23,7 +23,6 @@ pub fn mmult<T, Add, Mult>(a: &Matrix<T>, b: &Matrix<T>, add: Add, mult: Mult) -
     x
 }
 
-pub type Integral = usize;
 pub fn power<T, F>(mut x: T, mut n: Integral, op: F) -> T
     where T: Clone,
           F: Fn(&T, &T) -> T {
@@ -45,11 +44,30 @@ pub fn power<T, F>(mut x: T, mut n: Integral, op: F) -> T
     res
 }
 
-pub type T_ = usize;
-pub fn min_path(x: &Matrix<T_>, y: &Matrix<T_>, mut i: T_, j: T_, mut p: T_) -> Vec<T_> {
-    let n = x.len();
-    let mut k = 0;
-    let mut pv: Vec<T_> = vec![];
+pub fn min_path(x: &Matrix<Integral>, y: &Matrix<Integral>,
+    i: Integral, j: Integral, path: Integral) -> Vec<Integral> {
+    min_path_n(x, y, i, j, path, x.len())
+}
+
+pub fn min_path_n(x: &Matrix<Integral>, y: &Matrix<Integral>,
+    i: Integral, j: Integral, path: Integral, n: Integral) -> Vec<Integral> {
+    if n == 0 { return vec![]; }
+    let mut c = 0; let mut v = vec![];
+    {
+        let pred = |i: &Integral| {
+            if c != n { v.push(i.clone()); c+=1; true }
+            else { false }
+        };
+        min_path_pred(x, y, i, j, path, pred);
+    }
+    if c != n { v.push(j); }
+    v
+}
+
+pub fn min_path_pred<Predicate>(x: &Matrix<Integral>, y: &Matrix<Integral>,
+    mut i: Integral, j: Integral, mut p: Integral, mut pred: Predicate) -> ()
+    where Predicate: FnMut(&Integral) -> bool {
+    let n = x.len(); let mut k = 0;
     loop {
         while k != n {
             let val = x[k][j];
@@ -58,12 +76,12 @@ pub fn min_path(x: &Matrix<T_>, y: &Matrix<T_>, mut i: T_, j: T_, mut p: T_) -> 
             }
             k += 1;
         }
-        pv.push(i);
-        if k == n { pv.push(j); return pv }
+        if !pred(&i) || k == n { break; }
         i = k; p = x[k][j]; k = 0;
     }
 }
 
+//use std::cmp::min;
 //fn main() {
 //    let x = vec![
 //        vec![0,  1, 6,  1],
