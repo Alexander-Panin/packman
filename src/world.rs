@@ -59,7 +59,7 @@ fn weights(w: &Vec<u8>, steps: &Vec<Vec<Integral>>) -> Vec<Vec<(Integral, Integr
         .map(|(&c, xs)|
             xs.iter()
                 .map(move |&x|
-                    (x, if c as char == ',' { MAX } else { 1 }))
+                    (x, if c as char == '-' { MAX } else { 1 }))
                 .collect::<Vec<(Integral, Integral)>>())
         .collect::<Vec<Vec<(Integral, Integral)>>>()
 }
