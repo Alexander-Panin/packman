@@ -12,8 +12,8 @@ var server = require('http').createServer( (req, res) => {
         document.onkeydown = e => socketio.emit('move', e.code);
     </script>`;
 
-    var data = "";
-    var m = `<tt><div id='m'>${data}</div></tt>`;
+    var data = "blank screen";
+    var m = `<tt><div style="font-size:250%" id='m'>${data}</div></tt>`;
     res.end(io_str + js_str + m);
 
 });
