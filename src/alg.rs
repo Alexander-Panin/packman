@@ -44,6 +44,7 @@ pub fn power<T, F>(mut x: T, mut n: Integral, op: F) -> T
     res
 }
 
+#[allow(dead_code)]
 pub fn min_path(x: &Matrix<Integral>, y: &Matrix<Integral>,
     i: Integral, j: Integral, path: Integral) -> Vec<Integral> {
     min_path_n(x, y, i, j, path, x.len())
