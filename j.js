@@ -1,7 +1,6 @@
 const dgram = require('dgram');
 const client = dgram.createSocket('udp4');
 client.bind( 41235, 'localhost');
-const message = new Buffer('hello world');
 
 var server = require('http').createServer( (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -13,7 +12,7 @@ var server = require('http').createServer( (req, res) => {
     </script>`;
 
     var data = "blank screen";
-    var m = `<tt><div style="font-size:250%" id='m'>${data}</div></tt>`;
+    var m = `<tt><div style="font-size:250%; margin: 60px;" id='m'>${data}</div></tt>`;
     res.end(io_str + js_str + m);
 
 });
